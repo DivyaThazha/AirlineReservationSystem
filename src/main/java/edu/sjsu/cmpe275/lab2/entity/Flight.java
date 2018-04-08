@@ -3,9 +3,11 @@ package edu.sjsu.cmpe275.lab2.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 import java.util.List;
 
+@XmlRootElement
 @Entity
 @Table(name = "flight")
 public class Flight {
@@ -27,6 +29,10 @@ public class Flight {
 
     @Transient
     private List<Passenger> passengers;
+
+    public Flight(){
+
+    }
 
     public Flight(String flightNumber, double price, String origin, String destination, Date departureTime, Date arrivalTime, int seatsLeft, String description, Plane plane, List<Passenger> passengers) {
         this.flightNumber = flightNumber;

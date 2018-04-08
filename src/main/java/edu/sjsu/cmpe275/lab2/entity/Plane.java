@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
+
 @Embeddable
 public class Plane {
 
@@ -18,6 +19,10 @@ public class Plane {
 
     @Column
     private int year;
+
+    public Plane(){
+        
+    }
 
     public Plane(int capacity, String model, String manufacturer, int year) {
         this.capacity = capacity;

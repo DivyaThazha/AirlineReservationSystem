@@ -3,8 +3,10 @@ package edu.sjsu.cmpe275.lab2.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
+@XmlRootElement
 @Entity
 @Table(name = "reservation")
 public class Reservation {
@@ -21,6 +23,9 @@ public class Reservation {
     @ManyToMany(targetEntity = Flight.class, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<Flight> flights;
 
+    public Reservation(){
+
+    }
 
     public Reservation(Passenger passenger, double price, List<Flight> flights) {
         this.passenger = passenger;
