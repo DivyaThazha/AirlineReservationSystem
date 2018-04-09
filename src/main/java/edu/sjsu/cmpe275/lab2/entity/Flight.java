@@ -1,15 +1,23 @@
 package edu.sjsu.cmpe275.lab2.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @XmlRootElement
 @Entity
 @Table(name = "flight")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="passengers")
 public class Flight {
 
     @Id
@@ -19,7 +27,11 @@ public class Flight {
     private double price;
     private String origin;
     private String destination;
+
+    @JsonFormat(pattern="yyyy-MM-dd-hh")
     private Date departureTime;
+
+    @JsonFormat(pattern="yyyy-MM-dd-hh")
     private Date arrivalTime;
     private int seatsLeft;
     private String description;
@@ -27,14 +39,14 @@ public class Flight {
     @Embedded
     private Plane plane;  // Embedded
 
-    @Transient
-    private List<Passenger> passengers;
+    @ManyToMany(targetEntity = Passenger.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Passenger> passengers = new HashSet<Passenger>();
 
     public Flight(){
 
     }
 
-    public Flight(String flightNumber, double price, String origin, String destination, Date departureTime, Date arrivalTime, int seatsLeft, String description, Plane plane, List<Passenger> passengers) {
+    public Flight(String flightNumber, double price, String origin, String destination, Date departureTime, Date arrivalTime, int seatsLeft, String description, Plane plane, Set<Passenger> passengers) {
         this.flightNumber = flightNumber;
         this.price = price;
         this.origin = origin;
@@ -121,11 +133,11 @@ public class Flight {
         this.plane = plane;
     }
 
-    public List<Passenger> getPassengers() {
+    public Set<Passenger> getPassengers() {
         return passengers;
     }
 
-    public void setPassengers(List<Passenger> passengers) {
+    public void setPassengers(Set<Passenger> passengers) {
         this.passengers = passengers;
     }
 }
