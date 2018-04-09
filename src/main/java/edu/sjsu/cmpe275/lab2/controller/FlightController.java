@@ -24,30 +24,12 @@ public class FlightController {
      * @return the flight json
      */
 
-    @RequestMapping(value = "/{flightNumber}", params = "json", method = RequestMethod.GET, produces = "application/json")
-    public Object getFlightJSON(@PathVariable String flightNumber,
-                                @RequestParam Boolean json, HttpServletResponse response){
-        if(json.equals(true)){
-            Object findObject = flightRepository.findOne(flightNumber);
-            if(findObject!=null){
-                return findObject;
-            }else{
-                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-                return new ResponseEntity<>(new BadRequestController(new BadRequest(404, "Sorry, the requested flight with number "
-                        + flightNumber + " does not exist")), HttpStatus.NOT_FOUND);
-            }
-        }
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return new ResponseEntity<>(new BadRequestController(new BadRequest(404, "Sorry, the requested flight with number "
-                + flightNumber + " does not exist")), HttpStatus.NOT_FOUND);
-    }
-
-   /* @RequestMapping(value = "/{flightNumber}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{flightNumber}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getFlightJson(@PathVariable("flightNumber") String flightNumber) {
 
         return getFlight(flightNumber);
 
-    }*/
+    }
 
     /**
      * (2) Get a flight back as XML.
