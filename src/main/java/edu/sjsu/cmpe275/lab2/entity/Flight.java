@@ -1,13 +1,11 @@
 package edu.sjsu.cmpe275.lab2.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
+import edu.sjsu.cmpe275.lab2.util.View;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -17,36 +15,51 @@ import java.util.Set;
 @Entity
 @Table(name = "flight")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="passengers")
 public class Flight {
 
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @JsonView({View.PassengerView.class, View.ReservationView.class, View.FlightView.class})
     private String flightNumber; // Each flight has a unique flight number.
+
+    @JsonView({View.PassengerView.class, View.ReservationView.class, View.FlightView.class})
     private double price;
+
+    @JsonView({View.PassengerView.class, View.ReservationView.class, View.FlightView.class})
     private String origin;
+
+    @JsonView({View.PassengerView.class, View.ReservationView.class, View.FlightView.class})
     private String destination;
 
     @JsonFormat(pattern="yyyy-MM-dd-hh")
+    @JsonView({View.PassengerView.class, View.ReservationView.class, View.FlightView.class})
     private Date departureTime;
 
     @JsonFormat(pattern="yyyy-MM-dd-hh")
+    @JsonView({View.PassengerView.class, View.ReservationView.class, View.FlightView.class})
     private Date arrivalTime;
+
+    @JsonView({View.PassengerView.class, View.ReservationView.class, View.FlightView.class})
     private int seatsLeft;
+
+    @JsonView({View.PassengerView.class, View.ReservationView.class, View.FlightView.class})
     private String description;
 
     @Embedded
+    @JsonView({View.PassengerView.class, View.ReservationView.class, View.FlightView.class})
     private Plane plane;  // Embedded
 
+    @JsonView({View.FlightView.class})
     @ManyToMany(targetEntity = Passenger.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Passenger> passengers = new HashSet<Passenger>();
+    private List<Passenger> passengers ;
+
 
     public Flight(){
 
     }
 
-    public Flight(String flightNumber, double price, String origin, String destination, Date departureTime, Date arrivalTime, int seatsLeft, String description, Plane plane, Set<Passenger> passengers) {
+    public Flight(String flightNumber, double price, String origin, String destination, Date departureTime, Date arrivalTime, int seatsLeft, String description, Plane plane, List<Passenger> passengers) {
         this.flightNumber = flightNumber;
         this.price = price;
         this.origin = origin;
@@ -133,11 +146,13 @@ public class Flight {
         this.plane = plane;
     }
 
-    public Set<Passenger> getPassengers() {
+    @JsonView({View.FlightView.class})
+    public List<Passenger> getPassengers() {
         return passengers;
     }
 
-    public void setPassengers(Set<Passenger> passengers) {
+    public void setPassengers(List<Passenger> passengers) {
         this.passengers = passengers;
     }
+
 }

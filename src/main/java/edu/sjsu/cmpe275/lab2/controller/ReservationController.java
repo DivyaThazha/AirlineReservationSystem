@@ -1,7 +1,9 @@
 package edu.sjsu.cmpe275.lab2.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import edu.sjsu.cmpe275.lab2.entity.*;
 import edu.sjsu.cmpe275.lab2.respository.*;
+import edu.sjsu.cmpe275.lab2.util.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +25,7 @@ public class ReservationController {
     private FlightRepository flightRepository;
 
 
+    @JsonView(View.ReservationView.class)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getReservation(@PathVariable("id") String number) {
         //query db
@@ -36,13 +39,13 @@ public class ReservationController {
         } else {
 
             //Passenger passenger = passengerRepository.getPassengerByOrderNo(reservation.getOrderNumber());
-            //reservation.setPassenger(new PassengerLtdInfo(passenger));
+            //reservation.setPassenger(new PassengerInformation(passenger));
             return new ResponseEntity<>(reservation, HttpStatus.OK);
         }
 
     }
 
-    private Reservation removePassenger(Reservation reservation){
+    /*private Reservation removePassenger(Reservation reservation){
         Set<Flight> flights = reservation.getFlights();
         for(Flight f : flights) {
             f.setPassengers(null);
@@ -50,5 +53,5 @@ public class ReservationController {
         reservation.setFlights(flights);
 
         return reservation;
-    }
+    }*/
 }

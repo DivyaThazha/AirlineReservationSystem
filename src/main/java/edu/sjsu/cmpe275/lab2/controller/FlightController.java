@@ -1,8 +1,11 @@
 package edu.sjsu.cmpe275.lab2.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import edu.sjsu.cmpe275.lab2.entity.*;
 import edu.sjsu.cmpe275.lab2.respository.FlightRepository;
+import edu.sjsu.cmpe275.lab2.util.View;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,7 @@ public class FlightController {
      * @return the flight json
      */
 
+    @JsonView(View.FlightView.class)
     @RequestMapping(value = "/{flightNumber}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getFlightJson(@PathVariable("flightNumber") String flightNumber) {
 
@@ -60,16 +64,51 @@ public class FlightController {
                     + flightNumber + " does not exist")), HttpStatus.NOT_FOUND);
 
         } else {
-
-            /*List<PassengerLtdInfo> passengers = new ArrayList<>();
-            for (Reservation reservation : flight.getReservations()) {
-                passengers.add(new PassengerLtdInfo(reservation.getPassengerFKey()));
-            }
-            flight.setPassengers(passengers);*/
-
             return new ResponseEntity<>(flight, HttpStatus.OK);
         }
 
     }
+
+    /**
+     * (13) Create or update a flight.
+     *
+     * @param flightNumber      the flight number
+     * @param price             the price
+     * @param from              the from
+     * @param to                the to
+     * @param departureTime     the departure time
+     * @param arrivalTime       the arrival time
+     * @param description       the description
+     * @param capacity          the capacity
+     * @param model             the model
+     * @param manufacturer      the manufacturer
+     * @param yearOfManufacture the year of manufacture
+     * @return the response entity
+     */
+    @RequestMapping(value = "/{flightNumber}", method = RequestMethod.POST, produces = MediaType.APPLICATION_XML_VALUE)
+    public ResponseEntity<?> createOrUpdateFlight(@PathVariable("flightNumber") String flightNumber,
+                                                  @RequestParam(value = "price") int price,
+                                                  @RequestParam(value = "from") String from,
+                                                  @RequestParam(value = "to") String to,
+                                                  @RequestParam(value = "departureTime") String departureTime,
+                                                  @RequestParam(value = "arrivalTime") String arrivalTime,
+                                                  @RequestParam(value = "description") String description,
+                                                  @RequestParam(value = "capacity") int capacity,
+                                                  @RequestParam(value = "model") String model,
+                                                  @RequestParam(value = "manufacturer") String manufacturer,
+                                                  @RequestParam(value = "yearOfManufacture") int yearOfManufacture) {
+        try{
+
+            if(from==null||to==null||from==""||to==""||departureTime==null||arrivalTime==null ||departureTime==""||arrivalTime==""||description==null||
+                    description==""||model==null||model==""||manufacturer==null||manufacturer==""||price==0||capacity==0||yearOfManufacture==0){
+                    return new ResponseEntity<>(new BadRequestController(new BadRequest(400, "all parameters are not filled")), HttpStatus.BAD_REQUEST);
+            }
+            return null;
+
+        }catch (DataIntegrityViolationException e){
+            return new ResponseEntity<>(new BadRequestController(new BadRequest(400, "another passenger with the same number already exists.")), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }
