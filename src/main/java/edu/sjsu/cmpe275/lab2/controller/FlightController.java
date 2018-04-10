@@ -110,5 +110,35 @@ public class FlightController {
         }
     }
 
+    /**
+     * (14) Delete a flight.
+     *
+     * @param flightNumber the flight number
+     * @return the response entity
+     */
+    @RequestMapping(value = "/{flightNumber}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> deleteFlight(@PathVariable("flightNumber") String flightNumber) {
+
+        // query db
+        Flight flight = flightRepository.findOne(flightNumber);
+        System.out.println("In delete flight" + flight);
+        if (flight == null) {
+            return new ResponseEntity<>(new BadRequestController(new BadRequest(404, "Flight with number " + flightNumber + " does not exist")), HttpStatus.NOT_FOUND);
+
+            //return new ResponseEntity<>(new Response(404, "Flight with number " + flightNumber + " does not exist"), HttpStatus.NOT_FOUND);
+
+        } else if (!flight.getReservations().isEmpty()) {
+            return new ResponseEntity<>(new BadRequestController(new BadRequest(400, "Flight with number " + flightNumber + " has one or more reservation")), HttpStatus.BAD_REQUEST);
+
+            //return new ResponseEntity<>(new BadRequest(new Response(400, "Flight with number " + flightNumber + " has one or more reservation")), HttpStatus.BAD_REQUEST);
+
+        } else {
+            // remove from db
+            flightRepository.delete(flightNumber);
+            return new ResponseEntity<>(new BadRequestController(new BadRequest(200, "Flight with number " + flightNumber +  " is deleted successfully")), HttpStatus.OK);
+
+            //return new ResponseEntity<>(new Response(200, "Flight with number " + flightNumber +   " is deleted successfully"), HttpStatus.OK);
+        }
+    }
 
 }

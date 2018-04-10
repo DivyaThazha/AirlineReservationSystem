@@ -54,6 +54,8 @@ public class Flight {
     @ManyToMany(targetEntity = Passenger.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Passenger> passengers ;
 
+    @ManyToMany(mappedBy = "flights")
+    private List<Reservation> reservations;
 
     public Flight(){
 
@@ -172,5 +174,14 @@ public class Flight {
         return --seatsLeft == -1;
     }
 
+    /**
+     * Gets reservations.
+     *
+     * @return the reservations
+     */
+    @JsonIgnore
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
 
 }

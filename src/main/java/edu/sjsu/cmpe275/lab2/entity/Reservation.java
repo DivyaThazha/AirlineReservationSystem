@@ -28,6 +28,7 @@ public class Reservation {
     @JsonView({View.PassengerView.class, View.ReservationView.class})
     private double price;
 
+
     @JsonView(View.ReservationView.class)
     @ManyToOne(targetEntity = Passenger.class, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private Passenger passenger;
@@ -36,9 +37,10 @@ public class Reservation {
     @ManyToMany(targetEntity = Flight.class, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<Flight> flights;
 
-    @XmlElement
-    @Transient
-    private PassengerInformation passengerInfo;
+    //@XmlElement
+    //@Transient
+    //@XmlTransient
+    //private PassengerInformation passengerInfo;
 
     public Reservation(){
 
@@ -58,7 +60,7 @@ public class Reservation {
         this.reservationNumber = reservationNumber;
     }
 
-    //@XmlTransient
+    @XmlTransient
     public Passenger getPassenger() {
         return passenger;
     }
@@ -76,7 +78,7 @@ public class Reservation {
         this.price = price;
     }
 
-    //@XmlTransient
+    @XmlTransient
     public List<Flight> getFlights() {
         return flights;
     }
@@ -85,11 +87,11 @@ public class Reservation {
         this.flights = flights;
     }
 
-    public PassengerInformation getPassengerInfo() {
+   /* public PassengerInformation getPassengerInfo() {
         return passengerInfo;
     }
 
     public void setPassengerInfo(PassengerInformation passengerInfo) {
         this.passengerInfo = passengerInfo;
-    }
+    }*/
 }

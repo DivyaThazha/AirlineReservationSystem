@@ -171,6 +171,8 @@ public class PassengerController {
                     HttpStatus.NOT_FOUND);
 
         }else{
+
+
             passengerRepository.delete(id);
             return new ResponseEntity<>(new Response(200, "Passenger with id " + id + " is deleted successfully"),
                     HttpStatus.OK);
