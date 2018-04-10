@@ -110,5 +110,6 @@ public class Passenger {
     //@XmlTransient
     public List<Reservation> getReservations() {        return reservations;    }
 
+    @XmlTransient
     public void setReservations(List<Reservation> reservations) {        this.reservations = reservations;    }
 }

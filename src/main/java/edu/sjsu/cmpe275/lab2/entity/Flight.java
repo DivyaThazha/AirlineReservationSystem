@@ -155,4 +155,22 @@ public class Flight {
         this.passengers = passengers;
     }
 
+    /**
+     * Increment seats left by one.
+     */
+    public void incrementSeatsLeftByOne() {
+        seatsLeft += 1;
+    }
+
+    /**
+     * Decrement seats left by one boolean.
+     *
+     * @return the boolean
+     */
+    public boolean decrementSeatsLeftByOne() {
+
+        return --seatsLeft == -1;
+    }
+
+
 }

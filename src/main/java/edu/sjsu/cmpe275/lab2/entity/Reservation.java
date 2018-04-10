@@ -36,6 +36,9 @@ public class Reservation {
     @ManyToMany(targetEntity = Flight.class, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private List<Flight> flights;
 
+    @XmlElement
+    @Transient
+    private PassengerInformation passengerInfo;
 
     public Reservation(){
 
@@ -55,11 +58,12 @@ public class Reservation {
         this.reservationNumber = reservationNumber;
     }
 
-    //XmlTransient
+    //@XmlTransient
     public Passenger getPassenger() {
         return passenger;
     }
 
+    //@XmlTransient
     public void setPassenger(Passenger passenger) {
         this.passenger = passenger;
     }
@@ -81,4 +85,11 @@ public class Reservation {
         this.flights = flights;
     }
 
+    public PassengerInformation getPassengerInfo() {
+        return passengerInfo;
+    }
+
+    public void setPassengerInfo(PassengerInformation passengerInfo) {
+        this.passengerInfo = passengerInfo;
+    }
 }
