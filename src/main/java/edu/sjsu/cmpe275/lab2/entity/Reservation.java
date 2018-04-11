@@ -16,8 +16,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @Entity
 @Table(name = "reservation")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="passenger")
+@JsonTypeName("reservation")
+@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT ,use = JsonTypeInfo.Id.NAME)
 public class Reservation {
     @Id
     @GeneratedValue(generator = "uuid")
