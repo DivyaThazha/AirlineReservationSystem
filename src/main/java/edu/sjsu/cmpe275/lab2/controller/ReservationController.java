@@ -66,7 +66,7 @@ public class ReservationController {
      */
     @Transactional(Transactional.TxType.REQUIRED)
     @RequestMapping(method = RequestMethod.POST, params = {"passengerId", "flightLists"},
-                    produces = MediaType.APPLICATION_XML_VALUE)
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createReservation(@RequestParam(value = "passengerId") String passengerId,
                                                @RequestParam(value = "flightLists") List<String> flightNumbers) {
 

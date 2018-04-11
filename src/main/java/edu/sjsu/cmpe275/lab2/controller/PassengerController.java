@@ -50,7 +50,7 @@ public class PassengerController {
      * @return the person xml
      */
     @JsonView(View.PassengerView.class)
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, params = "xml")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, params = "xml",  produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<?> getPersonXml(@PathVariable("id") String id, @RequestParam(value = "xml") String isXml) {
         if (isXml.equals("true")) {
             return getPassengerJson(id);
